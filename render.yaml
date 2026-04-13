@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: progressly-backend
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        fromDatabase:
+          name: progressly-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRATION
+        value: 7d
+      - key: FRONTEND_URL
+        value: https://progressly-frontend.vercel.app
+      - key: BACKEND_API_URL
+        value: https://progressly-backend.onrender.com
+
+databases:
+  - name: progressly-db
+    plan: free
+    databaseName: progressly
+    region: ohio
